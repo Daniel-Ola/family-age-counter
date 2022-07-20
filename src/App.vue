@@ -19,7 +19,7 @@ const wa = computed(() => {
   let ages = [];
   for(let i = 0; i < wives.value; i++ ) {
     const age = currentAge.value - (Math.floor(Math.random() * 7))
-    ages.push(age)
+    ages.push(getYearOfBirth(age))
   }
   return ages.sort(function(a, b){return a - b});
 })
@@ -27,8 +27,11 @@ const wa = computed(() => {
 const es = computed(() => {
   let ages = [];
   for(let i = 0; i < elderSibs.value; i++ ) {
+    const min = generateRandomAge(2, 3);
+    const max = min * elderSibs.value
     const age = currentAge.value + (Math.floor(Math.random() * elderSibs.value * 2))+2
-    ages.push(age)
+    // const age = currentAge.value + generateRandomAge(min, max)
+    ages.push(getYearOfBirth(age))
   }
   return ages.sort(function(a, b){return a - b});
 })
@@ -36,8 +39,12 @@ const es = computed(() => {
 const ys = computed(() => {
   let ages = [];
   for(let i = 0; i < youngerSibs.value; i++ ) {
+    const min = generateRandomAge(2, 3);
+    const max = min * youngerSibs.value
     const age = currentAge.value - (Math.floor(Math.random() * youngerSibs.value * 2))-2
-    ages.push(age)
+    // const age = currentAge.value - generateRandomAge(min, max)
+    ages.push(getYearOfBirth(age))
+    // ages.push(age)
   }
   return ages.sort(function(a, b){return a - b});
 })
@@ -116,6 +123,14 @@ const generateRandomAge = (min, max) => {
     return rand;
 }
 
+const getYearOfBirth = (age) => {
+  const d = new Date();
+  const thisYear = d.getFullYear();
+  return thisYear - age;
+}
+
+console.log(getYearOfBirth(23))
+
 const checked = ref(false)
 
 </script>
@@ -165,16 +180,16 @@ const checked = ref(false)
 	</div>
 
 	<div>
-		<p>Current Age {{ currentAge }} </p>
+		<p>Current Age {{ getYearOfBirth(currentAge) }} </p>
 		<p>Wives Age {{ wa }} </p>
 		<p>Elder sibs {{ es }} </p>
 		<p>Younger sibs {{ ys }} </p>
-		<p>Father {{ fa }} </p>
-		<p>Mother {{ ma }} </p>
-		<p>PGM {{ pgm }} </p>
-		<p>PGP {{ pgp }} </p>
-		<p>MGM {{ mgm }} </p>
-		<p>MGP {{ mgp }} </p>
+		<p>Father {{ getYearOfBirth(fa) }} </p>
+		<p>Mother {{ getYearOfBirth(ma) }} </p>
+		<p>PGM {{ getYearOfBirth(pgm) }} </p>
+		<p>PGP {{ getYearOfBirth(pgp) }} </p>
+		<p>MGM {{ getYearOfBirth(mgm) }} </p>
+		<p>MGP {{ getYearOfBirth(mgp) }} </p>
 	</div>
 
 </div>
