@@ -132,54 +132,70 @@ const getYearOfBirth = (age) => {
 console.log(getYearOfBirth(23))
 
 const checked = ref(false)
+const toggler = ref(true)
 
 </script>
 
 <template>
 
 
-<div style="display: flex;">
+<div style="display: flex;" :class="[toggler ? 'align-bottom' : 'align-top' ]">
+  <button
+    :disabled="currentAge < 1"
+    @click="toggler = !toggler"
+    class="toggle-btn"
+  >
+    Toggle View
+  </button>
 	
-	<div style="flex-basis: 50%;">
-		current user age
-		<input type="number" v-model="currentAge">
-
-		<p><input type="number" v-model="wives"> wife(ves)</p>
-		<p><input type="number" v-model="elderSibs">	elder sibs</p>
-		<p><input type="number" v-model="youngerSibs">	younger sibs</p>
-
-		<p>
-      <input type="checkbox" id="hasFather" v-model="hasFather">
+	<div style="flex-basis: 50%;" v-if="toggler" class="form-container">
+    <div>
+      <label for="currentAge">current user age</label>
+		  <input type="number" inputmode="numeric" id="currentAge" v-model="currentAge">
+    </div>
+		<div>
+      <label for="wives">wife(ves)</label>
+      <input id="wives" type="number" v-model="wives">
+    </div>
+		<div>
+      <label for="eldersibs">No. of Elder Siblings</label>
+      <input type="number" inputmode="numeric" id="eldersibs" v-model="elderSibs">
+    </div>
+    <div>
+      <label for="elderSibs">No. of Younger Siblings</label>
+      <input type="number" inputmode="numeric" id="elderSibs" v-model="youngerSibs">
+    </div>
+		<div>
       <label for="hasFather">has Father</label>
-    </p>
-
-		<p>
-      <input type="checkbox" id="hasMother" v-model="hasMother">
+      <input type="checkbox" id="hasFather" v-model="hasFather">
+    </div>
+		<div>
       <label for="hasMother">has Mother</label>
-    </p>
-    <p>
-      <input type="checkbox" id="hasPGMother" v-model="hasPGMother" />
+      <input type="checkbox" id="hasMother" v-model="hasMother">
+    </div>
+    <div>
       <label for="hasPGMother">hasPGMother</label>
-    </p>
-    <p>
-      <input type="checkbox" id="hasPGFather" v-model="hasPGFather" />
+      <input type="checkbox" id="hasPGMother" v-model="hasPGMother" />
+    </div>
+    <div>
       <label for="hasPGFather">hasPGFather</label>
-    </p>
-    <p>
-      <input type="checkbox" id="hasMGMother" v-model="hasMGMother" />
+      <input type="checkbox" id="hasPGFather" v-model="hasPGFather" />
+    </div>
+    <div>
       <label for="hasMGMother">hasMGMother</label>
-    </p>
-    <p>
-      <input type="checkbox" id="hasMGFather" v-model="hasMGFather" />
+      <input type="checkbox" id="hasMGMother" v-model="hasMGMother" />
+    </div>
+    <div>
       <label for="hasMGFather">hasMGFather</label>
-    </p>
+      <input type="checkbox" id="hasMGFather" v-model="hasMGFather" />
+    </div>
     <!-- <p>
       <input type="checkbox" id="checkbox" v-model="checked" />
       <label for="checkbox">{{ checked }}</label>
     </p>-->
 	</div>
 
-	<div>
+	<div v-else>
 		<p>Current Age {{ getYearOfBirth(currentAge) }} </p>
 		<p>Wives Age {{ wa }} </p>
 		<p>Elder sibs {{ es }} </p>
@@ -200,7 +216,50 @@ const checked = ref(false)
 
 <style scoped>
 
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
+.align-bottom {
+  flex-direction: column;
+  /* -reverse; */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.align-top {
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.toggle-btn {
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  border: transparent;
+  padding: 0.5rem;
+  width: 7rem;
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  background-color: slateblue;
+}
+
+.toggle-btn:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+  background-blend-mode: lighten;
+}
 
 </style>
