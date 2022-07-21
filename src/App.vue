@@ -4,6 +4,7 @@ import { WITH_CTX } from "@vue/compiler-dom";
 
 const currentAge = ref(0)
 const wives = ref(0)
+const children = ref(0)
 const elderSibs = ref(0)
 const youngerSibs = ref(0)
 const hasFather = ref(false)
@@ -19,6 +20,14 @@ const wa = computed(() => {
   let ages = [];
   for(let i = 0; i < wives.value; i++ ) {
     const age = currentAge.value - (Math.floor(Math.random() * 7))
+    ages.push(getYearOfBirth(age))
+  }
+  return ages.sort(function(a, b){return a - b});
+})
+const ch = computed(() => {
+  let ages = [];
+  for(let i = 0; i < children.value; i++ ) {
+    const age = currentAge.value - generateRandomAge(20, currentAge.value)
     ages.push(getYearOfBirth(age))
   }
   return ages.sort(function(a, b){return a - b});
@@ -148,46 +157,61 @@ const toggler = ref(true)
     Toggle View
   </button>
 	
-	<div style="flex-basis: 50%;" v-if="toggler" class="form-container">
+	<div style="padding: 10px;" v-if="toggler" class="form-container">
     <div>
       <label for="currentAge">current user age</label>
 		  <input type="number" inputmode="numeric" id="currentAge" v-model="currentAge">
     </div>
-		<div>
-      <label for="wives">wife(ves)</label>
-      <input id="wives" type="number" v-model="wives">
+    <div style="display: flex; gap: 1rem">
+      <div>
+        <label for="wives">No of Wife(ves)</label>
+        <input id="wives" type="number" v-model="wives">
+      </div>
+      <div>
+        <label for="children">No. of Children</label>
+        <input id="children" type="number" v-model="children">
+      </div>
     </div>
-		<div>
-      <label for="eldersibs">No. of Elder Siblings</label>
-      <input type="number" inputmode="numeric" id="eldersibs" v-model="elderSibs">
+		
+    <div style="display: flex; gap: 1rem">
+      <div>
+        <label for="eldersibs">No. of Elder Siblings</label>
+        <input type="number" inputmode="numeric" id="eldersibs" v-model="elderSibs">
+      </div>
+      <div>
+        <label for="elderSibs">No. of Younger Siblings</label>
+        <input type="number" inputmode="numeric" id="elderSibs" v-model="youngerSibs">
+      </div>
     </div>
-    <div>
-      <label for="elderSibs">No. of Younger Siblings</label>
-      <input type="number" inputmode="numeric" id="elderSibs" v-model="youngerSibs">
+    <div class="form-group">
+      <div class="has-checkbox">
+        <label for="hasFather" style="text-align: center">hasFather</label>
+        <input type="checkbox" id="hasFather" v-model="hasFather">
+      </div>
+      <div class="has-checkbox">
+        <label for="hasMother" style="text-align: center">hasMother</label>
+        <input type="checkbox" id="hasMother" v-model="hasMother">
+      </div>
     </div>
-		<div>
-      <label for="hasFather">has Father</label>
-      <input type="checkbox" id="hasFather" v-model="hasFather">
+    <div class="form-group">
+      <div class="has-checkbox">
+        <label for="hasPGMother" style="text-align: center">hasPGMother</label>
+        <input type="checkbox" id="hasPGMother" v-model="hasPGMother" />
+      </div>
+      <div class="has-checkbox">
+        <label for="hasPGFather" style="text-align: center">hasPGFather</label>
+        <input type="checkbox" id="hasPGFather" v-model="hasPGFather" />
+      </div>
     </div>
-		<div>
-      <label for="hasMother">has Mother</label>
-      <input type="checkbox" id="hasMother" v-model="hasMother">
-    </div>
-    <div>
-      <label for="hasPGMother">hasPGMother</label>
-      <input type="checkbox" id="hasPGMother" v-model="hasPGMother" />
-    </div>
-    <div>
-      <label for="hasPGFather">hasPGFather</label>
-      <input type="checkbox" id="hasPGFather" v-model="hasPGFather" />
-    </div>
-    <div>
-      <label for="hasMGMother">hasMGMother</label>
-      <input type="checkbox" id="hasMGMother" v-model="hasMGMother" />
-    </div>
-    <div>
-      <label for="hasMGFather">hasMGFather</label>
-      <input type="checkbox" id="hasMGFather" v-model="hasMGFather" />
+    <div class="form-group">
+      <div class="has-checkbox">
+        <label for="hasMGMother" style="text-align: center">hasMGMother</label>
+        <input type="checkbox" id="hasMGMother" v-model="hasMGMother" />
+      </div>
+      <div class="has-checkbox">
+        <label for="hasMGFather" style="text-align: center">hasMGFather</label>
+        <input type="checkbox" id="hasMGFather" v-model="hasMGFather" />
+      </div>
     </div>
     <!-- <p>
       <input type="checkbox" id="checkbox" v-model="checked" />
@@ -198,6 +222,7 @@ const toggler = ref(true)
 	<div v-else>
 		<p>Current Age {{ getYearOfBirth(currentAge) }} </p>
 		<p>Wives Age {{ wa }} </p>
+		<p>Children Age {{ ch }} </p>
 		<p>Elder sibs {{ es }} </p>
 		<p>Younger sibs {{ ys }} </p>
 		<p>Father {{ getYearOfBirth(fa) }} </p>
@@ -219,6 +244,38 @@ const toggler = ref(true)
 label {
   display: block;
   margin-bottom: 0.25rem;
+}
+
+.form-group {
+  display: flex;
+  gap: 1rem;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.form-group > .has-checkbox {
+  display: flex;
+  flex-basis: 50%;
+  align-items: center;
+}
+
+/* .form-group > .has-checkbox:first-child {
+  border: 2px solid red;
+} */
+
+/* .form-group > .has-checkbox > label {
+  border: 2px solid red;
+  flex-grow: 1;
+} */
+
+.has-checkbox > label {
+  display: inline;
+}
+
+input {
+  height: 2rem;
+  text-align: center;
+  width: 100%;
 }
 
 .form-container {
